@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portofolio Security - Asyhadi Adji Nurvanto</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        komdigi: {
+                            DEFAULT: '#0F172A', // Dark Navy
+                            accent: '#3B82F6',  // Bright Blue
+                            dark: '#020617',    // Almost Black
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Matrix Rain Canvas */
+        #matrix-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.1;
+        }
+
+        /* Glassmorphism Classes */
+        .glass-nav {
+            background: rgba(15, 23, 42, 0.85); /* Darker for mobile readability */
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Responsive Text Utilities */
+        .type-text::after {
+            content: '|';
+            animation: blink 1s infinite;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* Animation Trigger Classes */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased overflow-x-hidden selection:bg-blue-500 selection:text-white">
+
+    <nav class="fixed w-full z-50 transition-all duration-300 glass-nav" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                
+                <div class="flex-shrink-0 flex items-center gap-3 cursor-pointer group">
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-lg flex items-center justify-center text-white shadow-lg group-hover:rotate-12 transition">
+                        <i class="fa-solid fa-shield-halved text-xl"></i>
+                    </div>
+                    <span class="font-bold text-xl text-white tracking-tight">Asyhadi Adji Nurvanto</span>
+                </div>
+
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#home" class="text-slate-300 hover:text-white hover:bg-white/10 px-3 py-2 rounded-md text-sm font-medium transition">Beranda</a>
+                        <a href="#skills" class="text-slate-300 hover:text-white hover:bg-white/10 px-3 py-2 rounded-md text-sm font-medium transition">Keahlian</a>
+                        <a href="#projects" class="text-slate-300 hover:text-white hover:bg-white/10 px-3 py-2 rounded-md text-sm font-medium transition">Portofolio</a>
+                        <a href="#contact" class="bg-komdigi-accent text-white px-5 py-2 rounded-full font-medium hover:bg-blue-600 transition shadow-lg shadow-blue-500/30 transform hover:-translate-y-0.5">Hubungi Saya</a>
+                    </div>
+                </div>
+
+                <div class="-mr-2 flex md:hidden">
+                    <button onclick="toggleMobileMenu()" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-slate-400 hover:text-white hover:bg-white/10 focus:outline-none transition">
+                        <i class="fa-solid fa-bars text-2xl" id="menu-icon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="md:hidden hidden bg-komdigi-DEFAULT border-t border-slate-700" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#home" onclick="toggleMobileMenu()" class="text-slate-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Beranda</a>
+                <a href="#skills" onclick="toggleMobileMenu()" class="text-slate-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Keahlian</a>
+                <a href="#projects" onclick="toggleMobileMenu()" class="text-slate-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Portofolio</a>
+                <a href="#contact" onclick="toggleMobileMenu()" class="text-komdigi-accent hover:text-blue-400 block px-3 py-2 rounded-md text-base font-bold">Hubungi Saya</a>
+            </div>
+        </div>
+    </nav>
+
+    <section id="home" class="relative pt-32 pb-16 lg:pt-48 lg:pb-32 overflow-hidden bg-komdigi-dark text-white">
+        <canvas id="matrix-canvas"></canvas>
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col-reverse lg:flex-row items-center gap-12 lg:gap-8">
+            
+            <div class="w-full lg:w-1/2 text-center lg:text-left reveal active">
+                <div class="inline-flex items-center px-3 py-1 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-300 text-xs sm:text-sm mb-6 animate-pulse mx-auto lg:mx-0">
+                    <span class="w-2 h-2 rounded-full bg-green-400 mr-2"></span>
+                    Ready for Hire 
+                </div>
+                <h1 class="text-4xl sm:text-5xl lg:text-7xl font-bold leading-tight mb-6">
+                    Web Developer + <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300 type-text"></span>
+                </h1>
+                <p class="text-base sm:text-lg text-slate-400 mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+                    Membangun website modern dengan standar keamanan tinggi. Menguasai <span class="text-white font-semibold">Secure Coding</span> untuk mencegah serangan siber pada infrastruktur pemerintah.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start w-full sm:w-auto">
+                    <a href="#projects" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-komdigi-accent text-white font-bold hover:bg-blue-600 transition shadow-lg shadow-blue-500/40 text-center">
+                        <i class="fa-solid fa-code mr-2"></i> Lihat Proyek
+                    </a>
+                    <a href="#contact" class="w-full sm:w-auto px-8 py-4 rounded-xl border border-slate-600 hover:border-white hover:bg-white/5 transition text-center">
+                        Unduh CV
+                    </a>
+                </div>
+            </div>
+
+            <div class="w-full lg:w-1/2 flex justify-center reveal active delay-200">
+                <div class="relative w-64 h-64 sm:w-80 sm:h-80 lg:w-[450px] lg:h-[450px] animate-float">
+                    <div class="absolute inset-0 bg-blue-600 rounded-full blur-[80px] opacity-20"></div>
+                    
+                    <div class="relative w-full h-full rounded-3xl overflow-hidden border-2 border-slate-700/50 shadow-2xl bg-slate-800">
+                        <img src="aan.jpeg" class="w-full h-full object-cover" alt="Profile">
+                    </div>
+
+                    <div class="absolute -bottom-6 -left-6 bg-slate-800/90 backdrop-blur border border-slate-600 p-4 rounded-xl shadow-xl flex items-center gap-4 animate-bounce" style="animation-duration: 3s;">
+                        <div class="bg-green-500/20 p-3 rounded-lg text-green-400">
+                            <i class="fa-solid fa-bug-slash text-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-400">Skill Utama</p>
+                            <p class="text-sm font-bold text-white">Vulnerability Patching</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="py-24 bg-white relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden opacity-30 pointer-events-none">
+            <div class="absolute -top-24 -right-24 w-96 h-96 bg-blue-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70"></div>
+            <div class="absolute bottom-0 left-0 w-72 h-72 bg-purple-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-komdigi-accent font-bold tracking-wide uppercase text-xs sm:text-sm mb-2">Tech Stack & Tools</h2>
+                <h3 class="text-3xl sm:text-4xl font-bold text-komdigi-DEFAULT">Kompetensi Teknis</h3>
+                <p class="text-slate-500 mt-4 max-w-2xl mx-auto">
+                    Kombinasi keahlian pengembangan perangkat lunak dan alat pengujian keamanan siber.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                
+                <div class="p-6 rounded-2xl bg-white border border-slate-200 hover:border-blue-400 hover:shadow-xl hover:-translate-y-2 transition duration-300 group reveal">
+                    <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center text-indigo-600 text-2xl mb-4 group-hover:bg-indigo-600 group-hover:text-white transition">
+                        <i class="fa-brands fa-php"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-800">PHP Native</h4>
+                    <p class="text-xs text-slate-500 mt-1">Secure Backend Logic, PDO, Input Sanitization.</p>
+                </div>
+
+                <div class="p-6 rounded-2xl bg-white border border-slate-200 hover:border-orange-400 hover:shadow-xl hover:-translate-y-2 transition duration-300 group reveal delay-100">
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center text-orange-600 text-2xl mb-4 group-hover:bg-orange-600 group-hover:text-white transition">
+                        <i class="fa-solid fa-database"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-800">MySQL / MariaDB</h4>
+                    <p class="text-xs text-slate-500 mt-1">Query Optimization & Injection Prevention.</p>
+                </div>
+
+                <div class="p-6 rounded-2xl bg-white border border-slate-200 hover:border-yellow-400 hover:shadow-xl hover:-translate-y-2 transition duration-300 group reveal delay-200">
+                    <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center text-yellow-600 text-2xl mb-4 group-hover:bg-yellow-500 group-hover:text-white transition">
+                        <i class="fa-brands fa-js"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-800">JavaScript</h4>
+                    <p class="text-xs text-slate-500 mt-1">DOM Manipulation & XSS Defense.</p>
+                </div>
+
+                <div class="p-6 rounded-2xl bg-white border border-slate-200 hover:border-cyan-400 hover:shadow-xl hover:-translate-y-2 transition duration-300 group reveal delay-300">
+                    <div class="w-12 h-12 bg-cyan-100 rounded-lg flex items-center justify-center text-cyan-600 text-2xl mb-4 group-hover:bg-cyan-600 group-hover:text-white transition">
+                        <i class="fa-brands fa-css3-alt"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-800">Tailwind CSS</h4>
+                    <p class="text-xs text-slate-500 mt-1">Responsive Design & Modern UI.</p>
+                </div>
+
+                <div class="p-6 rounded-2xl bg-white border border-slate-200 hover:border-red-400 hover:shadow-xl hover:-translate-y-2 transition duration-300 group reveal">
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center text-red-600 text-2xl mb-4 group-hover:bg-red-600 group-hover:text-white transition">
+                        <i class="fa-solid fa-bug"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-800">Burp Suite</h4>
+                    <p class="text-xs text-slate-500 mt-1">Web Vulnerability Scanning & Request Interception.</p>
+                </div>
+
+                <div class="p-6 rounded-2xl bg-white border border-slate-200 hover:border-gray-800 hover:shadow-xl hover:-translate-y-2 transition duration-300 group reveal delay-100">
+                    <div class="w-12 h-12 bg-gray-200 rounded-lg flex items-center justify-center text-gray-700 text-2xl mb-4 group-hover:bg-gray-800 group-hover:text-white transition">
+                        <i class="fa-brands fa-git-alt"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-800">Git & GitHub</h4>
+                    <p class="text-xs text-slate-500 mt-1">Version Control & Source Code Management.</p>
+                </div>
+
+                <div class="p-6 rounded-2xl bg-white border border-slate-200 hover:border-slate-600 hover:shadow-xl hover:-translate-y-2 transition duration-300 group reveal delay-200">
+                    <div class="w-12 h-12 bg-slate-200 rounded-lg flex items-center justify-center text-slate-700 text-2xl mb-4 group-hover:bg-slate-700 group-hover:text-white transition">
+                        <i class="fa-brands fa-linux"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-800">Linux / CLI</h4>
+                    <p class="text-xs text-slate-500 mt-1">Server Administration & File Permissions.</p>
+                </div>
+
+                <div class="p-6 rounded-2xl bg-white border border-slate-200 hover:border-blue-500 hover:shadow-xl hover:-translate-y-2 transition duration-300 group reveal delay-300">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600 text-2xl mb-4 group-hover:bg-blue-600 group-hover:text-white transition">
+                        <i class="fa-solid fa-code"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-800">Postman / API</h4>
+                    <p class="text-xs text-slate-500 mt-1">API Testing & Endpoint Validation.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="py-20 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <span class="bg-blue-100 text-blue-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Hasil Laboratorium</span>
+                <h3 class="text-3xl sm:text-4xl font-bold text-komdigi-DEFAULT mt-3">Portofolio Keamanan</h3>
+                <p class="text-slate-500 mt-4 max-w-2xl mx-auto text-sm sm:text-base">
+                    Dokumentasi hasil simulasi serangan dan perbaikan celah keamanan. Klik gambar untuk melihat detail bukti.
+                </p>
+            </div>
+
+            <div class="space-y-24">
+                
+                <div class="flex flex-col lg:flex-row gap-8 lg:gap-16 items-center reveal">
+                    <div class="w-full lg:w-1/2 group cursor-pointer order-1" onclick="openModal('serangan_gagal.png')">
+                        <div class="relative overflow-hidden rounded-2xl shadow-xl border border-slate-200 bg-white">
+                            <div class="absolute inset-0 bg-komdigi-DEFAULT/80 opacity-0 group-hover:opacity-100 transition duration-300 z-10 flex flex-col items-center justify-center text-white">
+                                <i class="fa-solid fa-magnifying-glass-plus text-3xl mb-2"></i>
+                                <span class="font-bold">Lihat Bukti Patch</span>
+                            </div>
+                            <img src="serangan_gagal.png" alt="SQL Injection" class="w-full h-auto object-cover transform group-hover:scale-105 transition duration-500">
+                        </div>
+
+                    </div>
+                    <div class="w-full lg:w-1/2 order-2">
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-3 py-1 bg-red-100 text-red-600 text-xs font-bold rounded-full border border-red-200">Critical</span>
+                            <span class="px-3 py-1 bg-green-100 text-green-600 text-xs font-bold rounded-full border border-green-200">Fixed</span>
+                        </div>
+                        <h3 class="text-2xl sm:text-3xl font-bold text-komdigi-DEFAULT mb-4">SQL Injection Mitigation</h3>
+                        <p class="text-slate-600 mb-6 leading-relaxed text-sm sm:text-base">
+                            Sistem login yang rentan terhadap bypass otentikasi menggunakan teknik <code>' OR '1'='1</code>. Celah ini memungkinkan hacker masuk sebagai Admin tanpa password.
+                        </p>
+                        <div class="bg-white p-4 rounded-xl border-l-4 border-blue-500 shadow-sm mb-6">
+                            <p class="text-sm font-semibold text-slate-800 mb-1">Solusi Penerapan:</p>
+                            <p class="text-sm text-slate-500">Mengganti query raw dengan <strong>PHP Prepared Statements</strong> untuk memisahkan data input dari perintah SQL.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col lg:flex-row-reverse gap-8 lg:gap-16 items-center reveal">
+                    <div class="w-full lg:w-1/2 group cursor-pointer order-1" onclick="openModal('xss.png')">
+                        <div class="relative overflow-hidden rounded-2xl shadow-xl border border-slate-200 bg-white">
+                            <div class="absolute inset-0 bg-komdigi-DEFAULT/80 opacity-0 group-hover:opacity-100 transition duration-300 z-10 flex flex-col items-center justify-center text-white">
+                                <i class="fa-solid fa-magnifying-glass-plus text-3xl mb-2"></i>
+                                <span class="font-bold">Lihat Bukti Patch</span>
+                            </div>
+                            <img src="xss.png" alt="XSS Defense" class="w-full h-auto object-cover transform group-hover:scale-105 transition duration-500">
+                        </div>
+                    </div>
+                    <div class="w-full lg:w-1/2 order-2">
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-3 py-1 bg-orange-100 text-orange-600 text-xs font-bold rounded-full border border-orange-200">Medium Risk</span>
+                            <span class="px-3 py-1 bg-green-100 text-green-600 text-xs font-bold rounded-full border border-green-200">Fixed</span>
+                        </div>
+                        <h3 class="text-2xl sm:text-3xl font-bold text-komdigi-DEFAULT mb-4">Anti-XSS (Cross-Site Scripting)</h3>
+                        <p class="text-slate-600 mb-6 leading-relaxed text-sm sm:text-base">
+                            Mengamankan form input komentar dari penyisipan script jahat yang dapat mencuri cookies atau melakukan redirect paksa pada browser pengguna lain.
+                        </p>
+                        <div class="bg-white p-4 rounded-xl border-l-4 border-blue-500 shadow-sm mb-6">
+                            <p class="text-sm font-semibold text-slate-800 mb-1">Solusi Penerapan:</p>
+                            <p class="text-sm text-slate-500">Implementasi <strong>HTML Special Chars</strong> sanitization dan Content Security Policy (CSP).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col lg:flex-row gap-8 lg:gap-16 items-center reveal">
+                    <div class="w-full lg:w-1/2 group cursor-pointer order-1" onclick="openModal('secure.png')">
+                        <div class="relative overflow-hidden rounded-2xl shadow-xl border border-slate-200 bg-white">
+                            <div class="absolute inset-0 bg-komdigi-DEFAULT/80 opacity-0 group-hover:opacity-100 transition duration-300 z-10 flex flex-col items-center justify-center text-white">
+                                <i class="fa-solid fa-magnifying-glass-plus text-3xl mb-2"></i>
+                                <span class="font-bold">Lihat Bukti Patch</span>
+                            </div>
+                            <img src="secure.png" alt="Upload Security" class="w-full h-auto object-cover transform group-hover:scale-105 transition duration-500">
+                        </div>
+                    </div>
+                    <div class="w-full lg:w-1/2 order-2">
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-3 py-1 bg-purple-100 text-purple-600 text-xs font-bold rounded-full border border-purple-200">High Risk</span>
+                            <span class="px-3 py-1 bg-green-100 text-green-600 text-xs font-bold rounded-full border border-green-200">Fixed</span>
+                        </div>
+                        <h3 class="text-2xl sm:text-3xl font-bold text-komdigi-DEFAULT mb-4">Secure File Upload System</h3>
+                        <p class="text-slate-600 mb-6 leading-relaxed text-sm sm:text-base">
+                            Mencegah upload file berbahaya (PHP Webshell/Malware) yang disamarkan sebagai gambar untuk mengambil alih server (RCE).
+                        </p>
+                        <div class="bg-white p-4 rounded-xl border-l-4 border-blue-500 shadow-sm mb-6">
+                            <p class="text-sm font-semibold text-slate-800 mb-1">Solusi Penerapan:</p>
+                            <p class="text-sm text-slate-500">Whitelist Ekstensi, Validasi MIME-Type, dan <strong>Randomized Filename</strong>.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact" class="bg-komdigi-DEFAULT text-white py-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <h2 class="text-2xl font-bold mb-6">Siap Mengamankan Data Indonesia</h2>
+            <p class="text-slate-400 mb-8 max-w-xl mx-auto text-sm">Portofolio ini dibangun sebagai bukti kompetensi untuk melamar di bidang teknologi dan IT.</p>
+            <div class="flex justify-center gap-6 mb-8">
+                <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-komdigi-accent transition text-lg"><i class="fa-brands fa-github"></i></a>
+                <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-komdigi-accent transition text-lg"><i class="fa-brands fa-linkedin"></i></a>
+                <a href="mailto:ajinurvanto122@gmail.com" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-komdigi-accent transition text-lg"><i class="fa-solid fa-envelope"></i></a>
+            </div>
+            <div class="border-t border-slate-800 pt-8 text-xs text-slate-500">
+                &copy; 2026 Asyhadi adji Nurvanto.S.Ti. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <div id="imageModal" class="fixed inset-0 z-[100] bg-black/95 hidden flex items-center justify-center p-4 backdrop-blur-sm" onclick="closeModal()">
+        <button class="absolute top-4 right-4 text-white text-4xl hover:text-red-500 transition z-50">&times;</button>
+        <img id="modalImage" src="" alt="Full Preview" class="max-w-full max-h-[90vh] rounded-lg shadow-2xl scale-95 transition-transform duration-300">
+    </div>
+
+    <a href="https://wa.me/6285719288555?text=Halo%20Aan,%20saya%20melihat%20portofolio%20security%20Anda%20dan%20ingin%20berdiskusi." 
+       target="_blank"
+       class="fixed bottom-6 right-6 z-50 bg-green-500 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg shadow-green-500/30 hover:bg-green-600 hover:-translate-y-1 transition-all duration-300 animate-bounce"
+       style="animation-duration: 3s;">
+        <i class="fa-brands fa-whatsapp text-3xl"></i>
+    </a>
+
+    <script>
+        // 1. Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('menu-icon');
+            
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-xmark'); // Ubah icon jadi X
+            } else {
+                menu.classList.add('hidden');
+                icon.classList.remove('fa-xmark');
+                icon.classList.add('fa-bars'); // Ubah icon jadi garis 3
+            }
+        }
+
+        // 2. Typing Effect
+        const words = ["Cyber Security.", "Secure Coding.", "Web Development."];
+        let i = 0;
+        let timer;
+
+        function typeWriter() {
+            const element = document.querySelector(".type-text");
+            const word = words[i];
+            let c = 0;
+            element.innerHTML = "";
+            const typing = setInterval(() => {
+                element.innerHTML += word.charAt(c);
+                c++;
+                if (c >= word.length) {
+                    clearInterval(typing);
+                    setTimeout(() => {
+                        i = (i + 1) % words.length;
+                        typeWriter();
+                    }, 2000);
+                }
+            }, 100);
+        }
+        document.addEventListener('DOMContentLoaded', typeWriter);
+
+        // 3. Scroll Reveal Animation
+        window.addEventListener('scroll', () => {
+            const reveals = document.querySelectorAll('.reveal');
+            const windowHeight = window.innerHeight;
+            const elementVisible = 100;
+            reveals.forEach(reveal => {
+                const elementTop = reveal.getBoundingClientRect().top;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveal.classList.add('active');
+                }
+            });
+        });
+
+        // 4. Matrix Rain Effect (Responsive Canvas)
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas(); // Init
+
+        const letters = "010101KOMDIGI";
+        const fontSize = 14;
+        let columns = canvas.width / fontSize;
+        let drops = [];
+
+        function initMatrix() {
+            columns = canvas.width / fontSize;
+            drops = Array(Math.floor(columns)).fill(1);
+        }
+        initMatrix();
+        window.addEventListener('resize', initMatrix);
+
+        function drawMatrix() {
+            ctx.fillStyle = "rgba(15, 23, 42, 0.05)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#0F0";
+            ctx.font = fontSize + "px monospace";
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = letters.charAt(Math.floor(Math.random() * letters.length));
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 50);
+
+        // 5. Modal Logic
+        function openModal(src) {
+            const modal = document.getElementById('imageModal');
+            const img = document.getElementById('modalImage');
+            img.src = src;
+            modal.classList.remove('hidden');
+            setTimeout(() => img.classList.replace('scale-95', 'scale-100'), 10);
+        }
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            const img = document.getElementById('modalImage');
+            img.classList.replace('scale-100', 'scale-95');
+            setTimeout(() => modal.classList.add('hidden'), 200);
+        }
+    </script>
+</body>
+</html>
